@@ -12,6 +12,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  //page view controller
+  final PageController _pageController = PageController(); 
+
 //list of screens
   final List<Widget> _screens = [
     const ChatScreen(),
@@ -24,17 +27,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(children: _screens,
+      body: PageView(
+        controller: _pageController,
+        children: _screens,
       onPageChanged: (index){
         setState(() {
           currentIndex = index;
         },);
+        
       }),
-      bottomNavigationBar: BottomNavigationBar(items: [
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+          
+          _pageController.jumpToPage(index);
+          
+        },
+        items: [
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chat"),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: "ChatHistory"),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
-      ], currentIndex: currentIndex,)
+      ], currentIndex: currentIndex,
+      elevation: 0,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      )
     );
   }
 }
