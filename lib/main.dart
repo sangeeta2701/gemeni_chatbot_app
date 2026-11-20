@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gemeni_chatbot_app/providers/chat_provider.dart';
 import 'package:gemeni_chatbot_app/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ChatProvider.initHive();
+  runApp(MultiProvider(
+    providers:[
+      ChangeNotifierProvider(create: (context) => ChatProvider()),
+    ],
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
